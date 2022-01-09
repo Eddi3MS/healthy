@@ -14,7 +14,7 @@ const HeroSty = styled.section`
     justify-content: center;
     align-items: center;
 
-    gap: 40px;
+    gap: 20px;
   }
 
   .illustration {
@@ -26,8 +26,6 @@ const HeroSty = styled.section`
     @media (max-width: 717px) {
       position: relative;
       max-width: 100%;
-
-      overflow: hidden;
     }
   }
   .search {

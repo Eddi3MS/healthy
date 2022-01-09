@@ -10,7 +10,6 @@ const JoinSty = styled.section`
   justify-content: space-around;
 
   .join__container {
-    padding-left: 1rem;
     h2 {
       font-size: 2rem;
       line-height: 2.25rem;
@@ -21,8 +20,12 @@ const JoinSty = styled.section`
       }
     }
     .join__input {
-      gap: 1rem;
+      gap: 1.5rem;
       margin-top: 2rem;
+
+      @media (max-width: 420px) {
+        gap: 0.5rem;
+      }
 
       input {
         height: 52px;
@@ -38,7 +41,7 @@ const JoinSty = styled.section`
         }
 
         @media (max-width: 800px) {
-          min-width: 250px;
+          min-width: 260px;
         }
       }
       input:focus {
@@ -94,8 +97,8 @@ function Join() {
         <div className="join__input  mulish__font flex">
           <input
             type="email"
-            name=""
-            id=""
+            name="email"
+            id="email"
             placeholder="Enter your email address"
           />
           <button className="flex" type="submit">

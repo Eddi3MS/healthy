@@ -45,6 +45,11 @@ const RegisterSty = styled.section`
 
       @media (max-width: 730px) {
         margin-bottom: 2rem;
+        margin-top: 0.8rem;
+      }
+
+      @media (max-width: 420px) {
+        min-width: 330px;
       }
 
       &:hover {
@@ -93,6 +98,10 @@ const RegisterSty = styled.section`
       }
       ::-webkit-calendar-picker-indicator {
         display: none;
+      }
+
+      @media (max-width: 420px) {
+        min-width: 330px;
       }
     }
     input[type="date"] {
