@@ -38,7 +38,7 @@ const RecipeItemSty = styled.li`
     button {
       background-color: var(--focus-color);
       align-self: start;
-      font-family: mulish, sans-serif;
+
       font-size: 1rem;
       color: white;
 
@@ -61,7 +61,7 @@ function RecipeItem({ recipe }) {
       <img src={recipe.image} alt={recipe.title} />
       <div className="flex container__recipe">
         <h3>{recipe.title}</h3>
-        <button>See Recipe</button>
+        <button className="mulish__font">See Recipe</button>
       </div>
     </RecipeItemSty>
   );

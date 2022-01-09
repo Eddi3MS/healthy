@@ -32,7 +32,6 @@ const JoinSty = styled.section`
         padding-left: 1rem;
 
         ::placeholder {
-          font-family: mulish, sans-serif;
           font-size: 1rem;
 
           color: var(--color-text);
@@ -92,7 +91,7 @@ function Join() {
       <div className="join__container">
         <h2>Join our membership to get special offer</h2>
 
-        <div className="join__input flex">
+        <div className="join__input  mulish__font flex">
           <input
             type="email"
             name=""

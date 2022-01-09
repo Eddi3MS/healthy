@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Cookie from "../components/layout/Cookie";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
 import Blog from "./Blog/Blog";
@@ -16,6 +18,22 @@ const Container = styled.main`
 `;
 
 function LandingPage() {
+  const [cookie, setCookie] = useState(false);
+
+  useEffect(() => {
+    var cookies = document.cookie.split(";").reduce((cookies, cookie) => {
+      const [name, val] = cookie.split("=").map((c) => c.trim());
+      cookies[name] = val;
+      return cookies;
+    }, {});
+
+    if (cookies.cookie === "accepted") {
+      return;
+    }
+
+    setCookie(true);
+  }, []);
+
   return (
     <Container>
       <Header />
@@ -25,6 +43,7 @@ function LandingPage() {
       <Blog />
       <Join />
       <Register />
+      {cookie ? <Cookie handleCookies={setCookie} /> : null}
       <Footer />
     </Container>
   );

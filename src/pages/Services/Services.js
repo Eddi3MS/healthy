@@ -25,7 +25,6 @@ const ServicesSty = styled.section`
     p {
       font-size: 1rem;
       max-width: 45ch;
-      font-family: mulish, sans-serif;
       color: var(--color-text);
       padding-inline: 0.5rem;
     }

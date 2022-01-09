@@ -56,7 +56,6 @@ const HeroSty = styled.section`
       padding-left: 1rem;
 
       ::placeholder {
-        font-family: mulish, sans-serif;
         font-size: 1rem;
 
         color: var(--color-text);
@@ -112,7 +111,7 @@ function Hero() {
       <div className="search">
         <h1>Ready for Trying a new recipe?</h1>
 
-        <div className="search__input flex">
+        <div className="search__input  mulish__font flex">
           <input
             type="text"
             name=""

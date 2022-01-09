@@ -64,7 +64,7 @@ const HeaderSty = styled.header`
 
   nav {
     z-index: 999;
-    font-family: mulish, sans-serif;
+
     font-weight: 600;
 
     ul {
@@ -99,13 +99,13 @@ const HeaderSty = styled.header`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-      }
 
-      li:nth-of-type(4) {
-        background-color: var(--focus-color);
-        border-radius: 4px;
-        a {
-          color: #fff;
+        li:nth-of-type(4) {
+          background-color: var(--focus-color);
+          border-radius: 4px;
+          a {
+            color: #fff;
+          }
         }
       }
 
@@ -129,7 +129,7 @@ function Header() {
         <img src={Menu} alt="icon for menu" />
       </button>
       <nav className={isActive ? "active" : ""}>
-        <ul className="flex">
+        <ul className="flex mulish__font  nav__ul">
           <li>
             <Link
               to="recipes"

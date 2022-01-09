@@ -111,6 +111,10 @@ body {
   display: flex;
 }
 
+.mulish__font {
+  font-family: mulish, sans-serif;
+}
+
 // slider lib \\ 
 
 .rec-arrow-left,

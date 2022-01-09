@@ -63,7 +63,7 @@ const RegisterSty = styled.section`
 
     label {
       display: block;
-      font-family: mulish, sans-serif;
+
       font-weight: bold;
       margin-block: 0.5rem 0.2rem;
       color: var(--color-title-2);
@@ -73,13 +73,12 @@ const RegisterSty = styled.section`
       height: 52px;
       min-width: 350px;
       border-radius: var(--radius);
-      font-family: mulish, sans-serif;
+
       border: 1px solid var(--color-text);
       padding-left: 1rem;
       color: var(--color-title);
 
       ::placeholder {
-        font-family: mulish, sans-serif;
         font-size: 1rem;
 
         color: var(--color-text);
@@ -158,24 +157,6 @@ function Register() {
   });
 
   useEffect(() => {
-    /* const localData = localStorage.getItem("@healthy");
-
-     if (localData) {
-      const data = JSON.parse(localData);
-
-      setName(data.name);
-      setCpf(data.cpf);
-      setBirth(data.birth);
-      setCep(data.cep);
-      setLogradouro(data.logradouro);
-      setComplemento(data.complemento);
-      setBairro(data.bairro);
-      setLocalidade(data.localidade);
-      setUf(data.uf);
-
-      return;
-    } */
-
     if (cep.trim() !== "" && cep.length === 8 && /^[0-9]+$/.test(cep)) {
       const updateData = ({
         logradouro,
@@ -246,7 +227,10 @@ function Register() {
 
     localStorage.setItem("@healthy", JSON.stringify(dataStorage));
 
-    document.cookie = `healthy=${JSON.stringify(dataStorage)}`;
+    const expiresCookie = new Date(2023, 0, 1).toUTCString();
+    document.cookie = `healthy=${JSON.stringify(
+      dataStorage
+    )}; expires=${expiresCookie}`;
 
     setName("");
     setBirth("");
@@ -279,7 +263,7 @@ function Register() {
           <p>{errorMessage}</p>
         </div>
       ) : null}
-      <form onSubmit={formHandler}>
+      <form className="mulish__font" onSubmit={formHandler}>
         <div className="control">
           <label htmlFor="name">Nome</label>
           <input
@@ -319,6 +303,7 @@ function Register() {
           <label htmlFor="cep">CEP</label>
           <input
             placeholder="12345678"
+            type="number"
             required
             id="cep"
             onChange={(e) => {

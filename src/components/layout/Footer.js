@@ -11,7 +11,10 @@ const FooterSty = styled.footer`
   a {
     text-align: center;
     font-size: 1rem;
-    font-family: mulish, sans-serif;
+  }
+
+  a {
+    color: var(--color-title-2);
   }
 
   .footer__terms {
@@ -26,7 +29,7 @@ const FooterSty = styled.footer`
 `;
 function Footer() {
   return (
-    <FooterSty className="flex">
+    <FooterSty className="flex  mulish__font">
       <p>© Copyrights 2019 Stack. All Rights Reserved.</p>
       <div className="footer__terms flex">
         <a href="/">Privacy Policy</a>
