@@ -4,6 +4,6 @@ See the live project [here](https://heuristic-poincare-050a25.netlify.app/).
 
 
 # Teste para emprego, feito apartir de um prototypo no adobe xd.
-ReactJS,StyledComps,LocalStorage,Cookies e responsivo*
+ReactJS,StyledComps,LocalStorage,Cookies e responsivo.
 
 * Tentei adaptar as imagens para o responsivo da melhor forma que pude, não sou muito bom com imagens.
