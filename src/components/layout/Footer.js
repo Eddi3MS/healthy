@@ -9,6 +9,7 @@ const FooterSty = styled.footer`
 
   p,
   a {
+    text-align: center;
     font-size: 1rem;
     font-family: mulish, sans-serif;
   }

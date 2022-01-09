@@ -5,6 +5,7 @@ import Blog from "./Blog/Blog";
 import Hero from "./Hero/Hero";
 import Join from "./Join/Join";
 import Recipes from "./Recipes/Recipes";
+import Register from "./Register/Register";
 import Services from "./Services/Services";
 
 const Container = styled.main`
@@ -23,6 +24,7 @@ function LandingPage() {
       <Services />
       <Blog />
       <Join />
+      <Register />
       <Footer />
     </Container>
   );

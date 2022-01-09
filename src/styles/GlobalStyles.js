@@ -107,8 +107,6 @@ body {
   color: var(--color-title-1);
 }
 
-
-
 .flex {
   display: flex;
 }

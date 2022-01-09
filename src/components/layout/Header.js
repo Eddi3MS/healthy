@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Link as RouterLink } from "react-router-dom";
 import Menu from "../../assets/imgs/menu.svg";
 import { Link } from "react-scroll";
 
@@ -104,8 +103,10 @@ const HeaderSty = styled.header`
 
       li:nth-of-type(4) {
         background-color: var(--focus-color);
-        color: #fff;
         border-radius: 4px;
+        a {
+          color: #fff;
+        }
       }
 
       &.active {
@@ -130,22 +131,48 @@ function Header() {
       <nav className={isActive ? "active" : ""}>
         <ul className="flex">
           <li>
-            <Link to="recipes" smooth activeClass="active" spy>
+            <Link
+              to="recipes"
+              smooth
+              activeClass="active"
+              onClick={() => setIsActive(false)}
+              spy
+            >
               HEALTHY RECIPER
             </Link>
           </li>
           <li>
-            <Link to="blog" smooth activeClass="active" spy>
+            <Link
+              to="blog"
+              smooth
+              activeClass="active"
+              spy
+              onClick={() => setIsActive(false)}
+            >
               BLOG
             </Link>
           </li>
           <li>
-            <Link to="join" smooth activeClass="active" spy>
+            <Link
+              onClick={() => setIsActive(false)}
+              to="join"
+              smooth
+              activeClass="active"
+              spy
+            >
               JOIN
             </Link>
           </li>
           <li>
-            <RouterLink to="/register">REGISTER</RouterLink>
+            <Link
+              smooth
+              onClick={() => setIsActive(false)}
+              activeClass="active"
+              spy
+              to="register"
+            >
+              REGISTER
+            </Link>
           </li>
         </ul>
       </nav>

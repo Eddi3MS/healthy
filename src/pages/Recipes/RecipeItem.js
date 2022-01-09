@@ -56,7 +56,6 @@ const RecipeItemSty = styled.li`
 `;
 
 function RecipeItem({ recipe }) {
-  console.log(recipe);
   return (
     <RecipeItemSty className="flex">
       <img src={recipe.image} alt={recipe.title} />

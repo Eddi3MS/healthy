@@ -29,11 +29,12 @@ const JoinSty = styled.section`
         min-width: 350px;
         border-radius: var(--radius);
         border: 1px solid var(--color-text);
+        padding-left: 1rem;
 
         ::placeholder {
           font-family: mulish, sans-serif;
           font-size: 1rem;
-          padding-left: 1rem;
+
           color: var(--color-text);
         }
 
@@ -83,8 +84,8 @@ function Join() {
   return (
     <JoinSty className="flex" id="join">
       <picture>
-        <source media="(max-width:800px)" srcset={JoinImageMob} />
-        <source media="(min-width:800px)" srcset={JoinImage} />
+        <source media="(max-width:800px)" srcSet={JoinImageMob} />
+        <source media="(min-width:800px)" srcSet={JoinImage} />
         <img src={JoinImage} alt="just an ornament" />
       </picture>
 

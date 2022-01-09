@@ -69,8 +69,8 @@ function Services() {
   return (
     <ServicesSty className="flex">
       <picture>
-        <source media="(max-width:902px)" srcset={ServicesImgMobile} />
-        <source media="(min-width:902px)" srcset={ServicesImg} />
+        <source media="(max-width:902px)" srcSet={ServicesImgMobile} />
+        <source media="(min-width:902px)" srcSet={ServicesImg} />
         <img src={ServicesImg} alt="just an ornament" />
       </picture>
 

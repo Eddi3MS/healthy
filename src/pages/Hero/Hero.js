@@ -53,11 +53,12 @@ const HeroSty = styled.section`
       min-width: 350px;
       border-radius: var(--radius);
       border: 1px solid var(--color-text);
+      padding-left: 1rem;
 
       ::placeholder {
         font-family: mulish, sans-serif;
         font-size: 1rem;
-        padding-left: 1rem;
+
         color: var(--color-text);
       }
     }
@@ -103,8 +104,8 @@ function Hero() {
   return (
     <HeroSty className="flex">
       <picture className="illustration">
-        <source media="(max-width:717px)" srcset={IllustrationMob} />
-        <source media="(min-width:717px)" srcset={Illustration} />
+        <source media="(max-width:717px)" srcSet={IllustrationMob} />
+        <source media="(min-width:717px)" srcSet={Illustration} />
         <img src={Illustration} alt="just an ornament" />
       </picture>
 
@@ -113,7 +114,7 @@ function Hero() {
 
         <div className="search__input flex">
           <input
-            type="search"
+            type="text"
             name=""
             id=""
             placeholder="Search healthy recipes"
