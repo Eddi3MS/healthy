@@ -18,6 +18,10 @@ const NotificationSty = styled.div`
   &.success {
     background-color: var(--focus-color);
   }
+
+  &.error {
+    background-color: red;
+  }
 `;
 
 function Notification({ message, status }) {
