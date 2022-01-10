@@ -2,6 +2,10 @@ import styled from "styled-components";
 import JoinImage from "../../assets/imgs/bloco_final_image.svg";
 import JoinImageMob from "../../assets/imgs/bloco_final_image_mob.svg";
 
+import Notification from "../../components/layout/Notification";
+
+import { useEffect, useState } from "react";
+
 const JoinSty = styled.section`
   margin-inline: 1rem;
 
@@ -82,7 +86,51 @@ const JoinSty = styled.section`
     }
   }
 `;
+
 function Join() {
+  const [feedback, setFeedback] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
+  const [feedbackStatus, setFeedbackStatus] = useState("");
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFeedbackMessage("");
+      setFeedbackStatus("");
+      setFeedback(false);
+    }, 2000);
+    return () => clearInterval(interval);
+  });
+
+  function addEmailHandler(e) {
+    e.preventDefault();
+
+    const enteredEmail = email;
+    const emailToAdd = {
+      email: enteredEmail,
+    };
+
+    fetch("https://healthy-a4a71-default-rtdb.firebaseio.com/emails.json", {
+      method: "POST",
+      body: JSON.stringify(emailToAdd),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(() => {
+        setFeedbackStatus("success");
+        setFeedbackMessage("Success! Your email was added to the list.");
+        setFeedback(true);
+        setEmail("");
+      })
+      .catch((err) => {
+        setFeedbackStatus("error");
+        setFeedbackMessage("Error! Something went wrong, try again later.");
+        setFeedback(true);
+        setEmail("");
+      });
+  }
   return (
     <JoinSty className="flex" id="join">
       <picture>
@@ -91,20 +139,29 @@ function Join() {
         <img src={JoinImage} alt="just an ornament" />
       </picture>
 
+      {feedback ? (
+        <Notification message={feedbackMessage} status={feedbackStatus} />
+      ) : null}
+
       <div className="join__container">
         <h2>Join our membership to get special offer</h2>
 
-        <div className="join__input  mulish__font flex">
+        <form
+          className="join__input  mulish__font flex"
+          onSubmit={addEmailHandler}
+        >
           <input
             type="email"
             name="email"
             id="email"
+            value={email}
             placeholder="Enter your email address"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <button className="flex" type="submit">
             Join
           </button>
-        </div>
+        </form>
       </div>
     </JoinSty>
   );

@@ -38,6 +38,13 @@ const ServicesSty = styled.section`
       border-radius: var(--radius);
       color: white;
       margin-bottom: 1rem;
+      cursor: pointer;
+      transtion: background-color 0.2s ease-in;
+
+      &:hover {
+        transtion: background-color 0.2s ease-in;
+        background-color: var(--focus-color-hover);
+      }
     }
   }
   @media (max-width: 902px) {
@@ -78,10 +85,10 @@ function Services() {
         <p>
           Far far away, behind the word mountains, far from the countries
           Vokalia and Consonantia, there live the blind texts.
-        </p>{" "}
+        </p>
         <p>
           Separated they live in Bookmarksgrove right at the coast of the
-          Semantics, a large language ocean.{" "}
+          Semantics, a large language ocean.
         </p>
         <p>
           A small river named Duden flows by their place and supplies it with
