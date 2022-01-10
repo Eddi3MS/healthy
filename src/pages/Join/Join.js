@@ -111,22 +111,26 @@ function Join() {
       email: enteredEmail,
     };
 
-    fetch(process.env.REACT_APP_ADDRESS, {
+    fetch(process.env.REACT_APP_ADDRES, {
       method: "POST",
       body: JSON.stringify(emailToAdd),
       headers: {
         "Content-Type": "application/json",
       },
     })
-      .then(() => {
-        setFeedbackStatus("success");
-        setFeedbackMessage("Success! Your email was added to the list.");
-        setFeedback(true);
-        setEmail("");
+      .then((res) => {
+        if (res.ok) {
+          setFeedbackStatus("success");
+          setFeedbackMessage("Success! Your email was added to the list.");
+          setFeedback(true);
+          setEmail("");
+        } else {
+          throw new Error("Error! Something went wrong, try again later.");
+        }
       })
       .catch((err) => {
         setFeedbackStatus("error");
-        setFeedbackMessage("Error! Something went wrong, try again later.");
+        setFeedbackMessage(err.message);
         setFeedback(true);
         setEmail("");
       });
