@@ -111,7 +111,7 @@ function Join() {
       email: enteredEmail,
     };
 
-    fetch("https://healthy-a4a71-default-rtdb.firebaseio.com/emails.json", {
+    fetch(process.env.REACT_APP_FIRE_ADDRESS, {
       method: "POST",
       body: JSON.stringify(emailToAdd),
       headers: {
