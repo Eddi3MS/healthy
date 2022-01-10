@@ -111,7 +111,7 @@ function Join() {
       email: enteredEmail,
     };
 
-    fetch(process.env.REACT_APP_ADDRES, {
+    fetch(process.env.REACT_APP_ADDRESS, {
       method: "POST",
       body: JSON.stringify(emailToAdd),
       headers: {
