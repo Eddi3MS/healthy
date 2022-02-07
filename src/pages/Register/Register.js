@@ -165,47 +165,66 @@ function Register() {
     return () => clearInterval(interval);
   });
 
+  const formatZipcode = (value) =>
+    value.slice(0, 9).replace(/(\d{5})(\d{1,3})/g, "$1-$2");
+
+  const zipcodeOnlyNumbers = (value) => value.replace("-", "");
+  const cepOnlyNumbers = zipcodeOnlyNumbers(cep);
+
   useEffect(() => {
-    if (cep.trim() !== "" && cep.length === 8 && /^[0-9]+$/.test(cep)) {
-      const updateData = ({
-        logradouro,
-        complemento,
-        bairro,
-        localidade,
-        uf,
-      }) => {
-        setLogradouro(logradouro);
-        setComplemento(complemento);
-        setBairro(bairro);
-        setLocalidade(localidade);
-        setUf(uf);
-      };
+    const identifier = setTimeout(() => {
+      if (
+        cepOnlyNumbers.trim() !== "" &&
+        /^[0-9]+$/.test(cepOnlyNumbers) &&
+        cepOnlyNumbers.length >= 8
+      ) {
+        const updateData = ({
+          logradouro,
+          complemento,
+          bairro,
+          localidade,
+          uf,
+        }) => {
+          setLogradouro(logradouro);
+          setComplemento(complemento);
+          setBairro(bairro);
+          setLocalidade(localidade);
+          setUf(uf);
+        };
 
-      const options = {
-        method: "GET",
-        mode: "cors",
-        cache: "default",
-      };
+        const options = {
+          method: "GET",
+          mode: "cors",
+          cache: "default",
+        };
 
-      fetch(`https://viacep.com.br/ws/${cep}/json`, options)
-        .then((res) => {
-          res.json().then((data) => {
-            return updateData(data);
+        fetch(`https://viacep.com.br/ws/${cepOnlyNumbers}/json`, options)
+          .then((res) => {
+            res.json().then((data) => {
+              return updateData(data);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
           });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+      }
+    }, 400);
 
-    // buscar na api, setar local storage, setar stored=true
-  }, [cep, cpf, name, birth]);
+    return () => {
+      clearTimeout(identifier);
+    };
+  }, [cepOnlyNumbers]);
 
   function formHandler(e) {
     e.preventDefault();
 
     if (!CPF.isValid(cpf)) {
-      setErrorMessage("CPF Inválido.");
+      setErrorMessage("CPF invalid.");
+      return;
+    }
+
+    if (!/^[0-9]+$/.test(cepOnlyNumbers)) {
+      setErrorMessage("CEP must contain only numbers.");
       return;
     }
 
@@ -213,7 +232,6 @@ function Register() {
       name.trim() === "" ||
       birth.trim() === "" ||
       bairro.trim() === "" ||
-      cep.trim() === "" ||
       logradouro.trim() === "" ||
       localidade.trim() === "" ||
       uf.trim() === ""
@@ -289,7 +307,7 @@ function Register() {
           <label htmlFor="cpf">CPF</label>
           <input
             type="number"
-            placeholder="987654321"
+            placeholder="Somente números.."
             required
             id="cpf"
             onChange={(e) => setCpf(e.target.value)}
@@ -311,18 +329,16 @@ function Register() {
         <div className="control">
           <label htmlFor="cep">CEP</label>
           <input
-            placeholder="12345678"
-            type="number"
+            placeholder="Somente números.."
+            type="text"
             required
             id="cep"
-            onChange={(e) => {
-              setCep(e.target.value);
-            }}
+            onChange={(e) => setCep(formatZipcode(e.target.value))}
             value={cep}
           />
         </div>
 
-        {cep.length === 8 ? (
+        {cep.length > 8 && (
           <>
             <div className="control">
               <label htmlFor="logradouro">Endereço</label>
@@ -374,7 +390,7 @@ function Register() {
               />
             </div>
           </>
-        ) : null}
+        )}
 
         <button type="submit">Enviar</button>
       </form>

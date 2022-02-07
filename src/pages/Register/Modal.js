@@ -39,6 +39,12 @@ const ModalSty = styled.div`
       right: 5px;
       border-radius: var(--radius);
       border: 0;
+      cursor: pointer;
+      background-color: #d1455a;
+
+      &:hover {
+        background-color: #cc2f46;
+      }
     }
   }
 `;
