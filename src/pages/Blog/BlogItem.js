@@ -14,6 +14,7 @@ const BlogItemSty = styled.div`
   border-radius: var(--radius);
 
   margin: 1rem;
+  cursor: pointer;
 
   .post__image {
     width: 100%;

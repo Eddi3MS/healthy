@@ -117,22 +117,23 @@ body {
 
 // slider lib \\ 
 
-.rec-arrow-left,
-.rec-arrow-right {
-  display: none;
+.rec-carousel-wrapper {
+  padding: 1rem;
+}
+.rec-arrow-right,
+.rec-arrow-left {
+  background-color: #fff !important;
+  border: 1px solid #f6f7f9 !important;
+ &:hover{
+   background-color: var(--focus-color-hover) !important;
+ }
+
+ &:disabled {
+  background-color: #e4edf5!important;
+ }
 }
 
-.rec-dot_active {
-  background-color: var(--focus-color) !important;
-  box-shadow: 0 0 1px 2px var(--focus-color-hover) !important;
-}
 
-.rec-dot {
-  &:hover,
-  &:focus {
-    box-shadow: 0 0 1px 2px var(--focus-color) !important;
-  }
-}
 
 `;
 
