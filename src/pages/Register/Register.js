@@ -364,7 +364,7 @@ function Register() {
   useEffect(() => {
     const updateData = (response) => {
       if (response.erro === true) {
-        setErrorMessage("CEP is invalid.");
+        setErrorMessage("CEP é invalido.");
         return;
       }
 
@@ -409,12 +409,12 @@ function Register() {
     e.preventDefault();
 
     if (!CPF.isValid(enteredCpf)) {
-      setErrorMessage("CPF is invalid.");
+      setErrorMessage("CPF é invalido.");
       return;
     }
 
     if (!enteredCepIsValid && !/^[0-9]+$/.test(cepOnlyNumbers)) {
-      setErrorMessage("CEP must contain only numbers.");
+      setErrorMessage("CEP deve conter apenas números.");
       return;
     }
 
@@ -427,7 +427,7 @@ function Register() {
       !enteredLocalidadeIsValid ||
       !enteredUfIsValid
     ) {
-      setErrorMessage("Preencha todos os campos de cadastro.");
+      setErrorMessage("Preencha todos os campos.");
       return;
     }
 
@@ -505,9 +505,7 @@ function Register() {
             onBlur={nameBlurHandler}
             value={enteredName}
           />
-          {nameInputHasError && (
-            <p className="error">Name must not be empty.</p>
-          )}
+          {nameInputHasError && <p className="error">Insira seu nome.</p>}
         </div>
 
         <div className="control cpf">
@@ -521,7 +519,7 @@ function Register() {
             onBlur={cpfBlurHandler}
             value={enteredCpf}
           />
-          {cpfInputHasError && <p className="error">CPF is invalid.</p>}
+          {cpfInputHasError && <p className="error">Insira seu CPF.</p>}
         </div>
 
         <div className="control birth">
@@ -534,7 +532,9 @@ function Register() {
             onBlur={birthBlurHandler}
             value={enteredBirth}
           />
-          {birthInputHasError && <p className="error">Date is invalid.</p>}
+          {birthInputHasError && (
+            <p className="error">Insira sua data de nascimento.</p>
+          )}
         </div>
 
         <div className="control cep">
@@ -548,7 +548,7 @@ function Register() {
             onBlur={cepBlurHandler}
             value={enteredCep}
           />
-          {cepInputHasError && <p className="error">Cep is invalid.</p>}
+          {cepInputHasError && <p className="error">Insira seu CEP.</p>}
         </div>
 
         {enteredCep.length >= 8 && (
@@ -564,7 +564,7 @@ function Register() {
                 value={enteredLogradouro}
               />
               {logradouroInputHasError && (
-                <p className="error">Logradouro cannot be empty.</p>
+                <p className="error">Insira seu endereço.</p>
               )}
             </div>
             <div className="control comp">
@@ -578,7 +578,7 @@ function Register() {
                 value={enteredComplemento}
               />
               {complementoInputHasError && (
-                <p className="error">Complemento cannot be empty.</p>
+                <p className="error">Insira um complemento.</p>
               )}
             </div>
             <div className="control bairro">
@@ -592,7 +592,7 @@ function Register() {
                 value={enteredBairro}
               />
               {bairroInputHasError && (
-                <p className="error">Bairro cannot be empty.</p>
+                <p className="error">Insira seu bairro.</p>
               )}
             </div>
             <div className="control local">
@@ -606,7 +606,7 @@ function Register() {
                 value={enteredLocalidade}
               />
               {localidadeInputHasError && (
-                <p className="error">Localidade cannot be empty.</p>
+                <p className="error">Insira sua cidade.</p>
               )}
             </div>
             <div className="control uf">
@@ -619,7 +619,7 @@ function Register() {
                 onChange={ufChangeHandler}
                 value={enteredUf}
               />
-              {ufInputHasError && <p className="error">UF cannot be empty.</p>}
+              {ufInputHasError && <p className="error">Insira seu estado.</p>}
             </div>
           </>
         )}
