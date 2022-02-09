@@ -362,43 +362,41 @@ function Register() {
   ]);
 
   useEffect(() => {
-    const fetchCEP = setTimeout(() => {
+    const updateData = (response) => {
+      if (response.erro === true) {
+        setErrorMessage("CEP is invalid.");
+        return;
+      }
+
+      const { logradouro, complemento, bairro, localidade, uf } = response;
+      setCepData({
+        logradouro,
+        complemento,
+        bairro,
+        localidade,
+        uf,
+      });
+    };
+
+    const options = {
+      method: "GET",
+      mode: "cors",
+      cache: "default",
+    };
+
+    const fetchCEP = setTimeout(async () => {
       if (/^[0-9]+$/.test(cepOnlyNumbers) && cepOnlyNumbers.length >= 8) {
-        const updateData = ({
-          logradouro,
-          complemento,
-          bairro,
-          localidade,
-          uf,
-        }) => {
-          setCepData({
-            logradouro,
-            complemento,
-            bairro,
-            localidade,
-            uf,
-          });
-        };
+        try {
+          const viacep = await fetch(
+            `https://viacep.com.br/ws/${cepOnlyNumbers}/json`,
+            options
+          );
 
-        const options = {
-          method: "GET",
-          mode: "cors",
-          cache: "default",
-        };
-
-        fetch(`https://viacep.com.br/ws/${cepOnlyNumbers}/json`, options)
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(res.statusText);
-            }
-            return res.json();
-          })
-          .then((data) => {
-            return updateData(data);
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
+          const response = await viacep.json();
+          updateData(response);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }, 300);
 
@@ -434,15 +432,15 @@ function Register() {
     }
 
     const dataStorage = {
-      enteredName,
-      enteredBirth,
-      enteredCpf,
-      enteredCep,
-      enteredLogradouro,
-      enteredComplemento,
-      enteredBairro,
-      enteredLocalidade,
-      enteredUf,
+      name: enteredName,
+      birth: enteredBirth,
+      cpf: enteredCpf,
+      cep: enteredCep,
+      logradouro: enteredLogradouro,
+      complemento: enteredComplemento,
+      bairro: enteredBairro,
+      localidade: enteredLocalidade,
+      uf: enteredUf,
     };
 
     localStorage.setItem("@healthy", JSON.stringify(dataStorage));
