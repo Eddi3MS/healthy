@@ -5,6 +5,8 @@ import SuccessAlert from "../../assets/imgs/success.svg";
 import Modal from "./Modal";
 
 import { cpf as CPF } from "cpf-cnpj-validator";
+import useInput from "../../hooks/useInput";
+import { formatZipcode, zipcodeOnlyNumbers } from "../../utils/cep";
 
 const RegisterSty = styled.section`
   max-width: 1228px;
@@ -111,6 +113,92 @@ const RegisterSty = styled.section`
       border: 2px solid var(--focus-color);
       outline: none;
     }
+
+    .error {
+      position: absolute;
+      color: red;
+      font-size: 0.875rem;
+    }
+  }
+
+  .control.name {
+    label {
+      color: ${(props) => props.nameIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.nameIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.cpf {
+    label {
+      color: ${(props) => props.cpfIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.cpfIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.cep {
+    label {
+      color: ${(props) => props.cepIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.cepIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.birth {
+    label {
+      color: ${(props) => props.birthIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.birthIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.log {
+    label {
+      color: ${(props) => props.logIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.logIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.comp {
+    label {
+      color: ${(props) => props.compIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.compIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.bairro {
+    label {
+      color: ${(props) => props.bairroIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.bairroIsInvalid && "1px solid red"};
+    }
+  }
+
+  .control.local {
+    label {
+      color: ${(props) => props.localIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.localIsInvalid && "1px solid red"};
+    }
+  }
+  .control.uf {
+    label {
+      color: ${(props) => props.ufIsInvalid && "red"};
+    }
+    input {
+      border: ${(props) => props.ufIsInvalid && "1px solid red"};
+    }
   }
 
   .alert {
@@ -143,15 +231,98 @@ const RegisterSty = styled.section`
 `;
 
 function Register() {
-  const [name, setName] = useState("");
-  const [birth, setBirth] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [cep, setCep] = useState("");
-  const [logradouro, setLogradouro] = useState("");
-  const [complemento, setComplemento] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [localidade, setLocalidade] = useState("");
-  const [uf, setUf] = useState("");
+  const {
+    value: enteredName,
+    isValid: enteredNameIsValid,
+    hasError: nameInputHasError,
+    reset: resetName,
+    inputBlurHandler: nameBlurHandler,
+    inputChangeHandler: nameChangeHandler,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredCpf,
+    hasError: cpfInputHasError,
+    reset: resetCpf,
+    inputBlurHandler: cpfBlurHandler,
+    inputChangeHandler: cpfChangeHandler,
+  } = useInput((value) => value.trim() !== "" && value.length >= 11);
+
+  const {
+    value: enteredCep,
+    isValid: enteredCepIsValid,
+    hasError: cepInputHasError,
+    reset: resetCep,
+    inputBlurHandler: cepBlurHandler,
+    inputChangeHandler: cepChangeHandler,
+  } = useInput((value) => value.trim() !== "" && value.length >= 8);
+
+  const {
+    value: enteredBirth,
+    isValid: enteredBirthIsValid,
+    hasError: birthInputHasError,
+    reset: resetBirth,
+    inputBlurHandler: birthBlurHandler,
+    inputChangeHandler: birthChangeHandler,
+  } = useInput((value) => value.trim() !== "");
+
+  const [cepData, setCepData] = useState({
+    logradouro: "",
+    complemento: "",
+    bairro: "",
+    localidade: "",
+    uf: "",
+  });
+
+  const {
+    value: enteredLogradouro,
+    isValid: enteredLogradouroIsValid,
+    hasError: logradouroInputHasError,
+    reset: resetLogradouro,
+    inputBlurHandler: logradouroBlurHandler,
+    inputChangeHandler: logradouroChangeHandler,
+    inputUpdateHandler: logradouroUpdateHandler,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredComplemento,
+    isValid: enteredComplementoIsValid,
+    hasError: complementoInputHasError,
+    reset: resetComplemento,
+    inputBlurHandler: complementoBlurHandler,
+    inputChangeHandler: complementoChangeHandler,
+    inputUpdateHandler: complementoUpdateHandler,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredBairro,
+    isValid: enteredBairroIsValid,
+    hasError: bairroInputHasError,
+    reset: resetBairro,
+    inputBlurHandler: bairroBlurHandler,
+    inputChangeHandler: bairroChangeHandler,
+    inputUpdateHandler: bairroUpdateHandler,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredLocalidade,
+    isValid: enteredLocalidadeIsValid,
+    hasError: localidadeInputHasError,
+    reset: resetLocalidade,
+    inputBlurHandler: localidadeBlurHandler,
+    inputChangeHandler: localidadeChangeHandler,
+    inputUpdateHandler: localidadeUpdateHandler,
+  } = useInput((value) => value.trim() !== "");
+
+  const {
+    value: enteredUf,
+    isValid: enteredUfIsValid,
+    hasError: ufInputHasError,
+    reset: resetUf,
+    inputBlurHandler: ufBlurHandler,
+    inputChangeHandler: ufChangeHandler,
+    inputUpdateHandler: ufUpdateHandler,
+  } = useInput((value) => value.trim() !== "");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -165,19 +336,34 @@ function Register() {
     return () => clearInterval(interval);
   });
 
-  const formatZipcode = (value) =>
-    value.slice(0, 9).replace(/(\d{5})(\d{1,3})/g, "$1-$2");
+  let cepOnlyNumbers = enteredCep;
 
-  const zipcodeOnlyNumbers = (value) => value.replace("-", "");
-  const cepOnlyNumbers = zipcodeOnlyNumbers(cep);
+  if (enteredCep.includes("-")) {
+    cepOnlyNumbers = zipcodeOnlyNumbers(formatZipcode(enteredCep));
+  }
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      if (
-        cepOnlyNumbers.trim() !== "" &&
-        /^[0-9]+$/.test(cepOnlyNumbers) &&
-        cepOnlyNumbers.length >= 8
-      ) {
+    logradouroUpdateHandler(cepData.logradouro);
+
+    complementoUpdateHandler(cepData.complemento);
+
+    localidadeUpdateHandler(cepData.localidade);
+
+    bairroUpdateHandler(cepData.bairro);
+
+    ufUpdateHandler(cepData.uf);
+  }, [
+    cepData,
+    logradouroUpdateHandler,
+    complementoUpdateHandler,
+    localidadeUpdateHandler,
+    ufUpdateHandler,
+    bairroUpdateHandler,
+  ]);
+
+  useEffect(() => {
+    const fetchCEP = setTimeout(() => {
+      if (/^[0-9]+$/.test(cepOnlyNumbers) && cepOnlyNumbers.length >= 8) {
         const updateData = ({
           logradouro,
           complemento,
@@ -185,11 +371,13 @@ function Register() {
           localidade,
           uf,
         }) => {
-          setLogradouro(logradouro);
-          setComplemento(complemento);
-          setBairro(bairro);
-          setLocalidade(localidade);
-          setUf(uf);
+          setCepData({
+            logradouro,
+            complemento,
+            bairro,
+            localidade,
+            uf,
+          });
         };
 
         const options = {
@@ -200,56 +388,61 @@ function Register() {
 
         fetch(`https://viacep.com.br/ws/${cepOnlyNumbers}/json`, options)
           .then((res) => {
-            res.json().then((data) => {
-              return updateData(data);
-            });
+            if (!res.ok) {
+              throw new Error(res.statusText);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            return updateData(data);
           })
           .catch((err) => {
-            console.log(err);
+            console.log(err.message);
           });
       }
-    }, 400);
+    }, 300);
 
     return () => {
-      clearTimeout(identifier);
+      clearTimeout(fetchCEP);
     };
   }, [cepOnlyNumbers]);
 
   function formHandler(e) {
     e.preventDefault();
 
-    if (!CPF.isValid(cpf)) {
-      setErrorMessage("CPF invalid.");
+    if (!CPF.isValid(enteredCpf)) {
+      setErrorMessage("CPF is invalid.");
       return;
     }
 
-    if (!/^[0-9]+$/.test(cepOnlyNumbers)) {
+    if (!enteredCepIsValid && !/^[0-9]+$/.test(cepOnlyNumbers)) {
       setErrorMessage("CEP must contain only numbers.");
       return;
     }
 
     if (
-      name.trim() === "" ||
-      birth.trim() === "" ||
-      bairro.trim() === "" ||
-      logradouro.trim() === "" ||
-      localidade.trim() === "" ||
-      uf.trim() === ""
+      !enteredNameIsValid ||
+      !enteredBirthIsValid ||
+      !enteredLogradouroIsValid ||
+      !enteredComplementoIsValid ||
+      !enteredBairroIsValid ||
+      !enteredLocalidadeIsValid ||
+      !enteredUfIsValid
     ) {
       setErrorMessage("Preencha todos os campos de cadastro.");
       return;
     }
 
     const dataStorage = {
-      name,
-      birth,
-      cpf,
-      cep,
-      logradouro,
-      complemento,
-      bairro,
-      localidade,
-      uf,
+      enteredName,
+      enteredBirth,
+      enteredCpf,
+      enteredCep,
+      enteredLogradouro,
+      enteredComplemento,
+      enteredBairro,
+      enteredLocalidade,
+      enteredUf,
     };
 
     localStorage.setItem("@healthy", JSON.stringify(dataStorage));
@@ -259,135 +452,176 @@ function Register() {
       dataStorage
     )}; expires=${expiresCookie}`;
 
-    setName("");
-    setBirth("");
-    setCpf("");
-    setCep("");
-    setLogradouro("");
-    setComplemento("");
-    setLocalidade("");
-    setUf("");
-    setBairro("");
+    resetName();
+    resetCpf();
+    resetBirth();
+    resetCep();
+    resetLogradouro();
+    resetComplemento();
+    resetBairro();
+    resetLocalidade();
+    resetUf();
+
     setSuccessMessage("Cadastro efetuado com sucesso.");
     setModal(true);
   }
 
   return (
-    <RegisterSty className="flex" id="register">
+    <RegisterSty
+      className="flex"
+      id="register"
+      nameIsInvalid={nameInputHasError}
+      cpfIsInvalid={cpfInputHasError}
+      cepIsInvalid={cepInputHasError}
+      birthIsInvalid={birthInputHasError}
+      logIsInvalid={logradouroInputHasError}
+      compIsInvalid={complementoInputHasError}
+      bairroIsInvalid={bairroInputHasError}
+      localIsInvalid={localidadeInputHasError}
+      ufIsInvalid={ufInputHasError}
+    >
       <h1>Register</h1>
 
-      {modal ? <Modal closeModal={setModal} /> : null}
+      {modal && <Modal closeModal={setModal} />}
 
-      {successMessage !== "" ? (
+      {successMessage && (
         <div className="alert flex success">
           <img src={SuccessAlert} alt="Success" />
           <p>{successMessage}</p>
         </div>
-      ) : null}
-      {errorMessage !== "" ? (
+      )}
+      {errorMessage && (
         <div className="alert flex error">
           <img src={ErrorAlert} alt="Error" />
           <p>{errorMessage}</p>
         </div>
-      ) : null}
+      )}
       <form className="mulish__font" onSubmit={formHandler}>
-        <div className="control">
+        <div className="control name">
           <label htmlFor="name">Nome</label>
           <input
             type="text"
             placeholder="Nome"
-            required
             id="name"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            onChange={nameChangeHandler}
+            onBlur={nameBlurHandler}
+            value={enteredName}
           />
+          {nameInputHasError && (
+            <p className="error">Name must not be empty.</p>
+          )}
         </div>
 
-        <div className="control">
+        <div className="control cpf">
           <label htmlFor="cpf">CPF</label>
           <input
             type="number"
             placeholder="Somente números.."
             required
             id="cpf"
-            onChange={(e) => setCpf(e.target.value)}
-            value={cpf}
+            onChange={cpfChangeHandler}
+            onBlur={cpfBlurHandler}
+            value={enteredCpf}
           />
+          {cpfInputHasError && <p className="error">CPF is invalid.</p>}
         </div>
 
-        <div className="control">
+        <div className="control birth">
           <label htmlFor="birth">Data de Nascimento</label>
           <input
             type="date"
             required
             id="birth"
-            onChange={(e) => setBirth(e.target.value)}
-            value={birth}
+            onChange={birthChangeHandler}
+            onBlur={birthBlurHandler}
+            value={enteredBirth}
           />
+          {birthInputHasError && <p className="error">Date is invalid.</p>}
         </div>
 
-        <div className="control">
+        <div className="control cep">
           <label htmlFor="cep">CEP</label>
           <input
             placeholder="Somente números.."
             type="text"
             required
             id="cep"
-            onChange={(e) => setCep(formatZipcode(e.target.value))}
-            value={cep}
+            onChange={cepChangeHandler}
+            onBlur={cepBlurHandler}
+            value={enteredCep}
           />
+          {cepInputHasError && <p className="error">Cep is invalid.</p>}
         </div>
 
-        {cep.length > 8 && (
+        {enteredCep.length >= 8 && (
           <>
-            <div className="control">
+            <div className="control log">
               <label htmlFor="logradouro">Endereço</label>
               <input
                 type="text"
                 required
                 id="logradouro"
-                onChange={(e) => setLogradouro(e.target.value)}
-                value={logradouro}
+                onChange={logradouroChangeHandler}
+                onBlur={logradouroBlurHandler}
+                value={enteredLogradouro}
               />
+              {logradouroInputHasError && (
+                <p className="error">Logradouro cannot be empty.</p>
+              )}
             </div>
-            <div className="control">
+            <div className="control comp">
               <label htmlFor="complemento">Complemento</label>
               <input
+                required
                 type="text"
                 id="complemento"
-                onChange={(e) => setComplemento(e.target.value)}
-                value={complemento}
+                onChange={complementoChangeHandler}
+                onBlur={complementoBlurHandler}
+                value={enteredComplemento}
               />
+              {complementoInputHasError && (
+                <p className="error">Complemento cannot be empty.</p>
+              )}
             </div>
-            <div className="control">
+            <div className="control bairro">
               <label htmlFor="bairro">Bairro</label>
               <input
                 type="text"
                 required
                 id="bairro"
-                onChange={(e) => setBairro(e.target.value)}
-                value={bairro}
+                onChange={bairroChangeHandler}
+                onBlur={bairroBlurHandler}
+                value={enteredBairro}
               />
+              {bairroInputHasError && (
+                <p className="error">Bairro cannot be empty.</p>
+              )}
             </div>
-            <div className="control">
+            <div className="control local">
               <label htmlFor="localidade">Cidade</label>
               <input
                 type="text"
                 required
                 id="localidade"
-                onChange={(e) => setLocalidade(e.target.value)}
-                value={localidade}
+                onChange={localidadeChangeHandler}
+                onBlur={localidadeBlurHandler}
+                value={enteredLocalidade}
               />
+              {localidadeInputHasError && (
+                <p className="error">Localidade cannot be empty.</p>
+              )}
             </div>
-            <div className="control">
+            <div className="control uf">
               <label htmlFor="uf">UF</label>
               <input
                 type="text"
                 required
                 id="uf"
-                onChange={(e) => setUf(e.target.value)}
-                value={uf}
+                onBlur={ufBlurHandler}
+                onChange={ufChangeHandler}
+                value={enteredUf}
               />
+              {ufInputHasError && <p className="error">UF cannot be empty.</p>}
             </div>
           </>
         )}
