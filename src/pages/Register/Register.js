@@ -1,12 +1,13 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
 import ErrorAlert from "../../assets/imgs/error.svg";
 import SuccessAlert from "../../assets/imgs/success.svg";
 import Modal from "./Modal";
-
-import { cpf as CPF } from "cpf-cnpj-validator";
 import useInput from "../../hooks/useInput";
 import { formatZipcode, zipcodeOnlyNumbers } from "../../utils/cep";
+import { CPFValidation } from "../../utils/cpf";
+import Input from "../../components/layout/Input";
 
 const RegisterSty = styled.section`
   max-width: 1228px;
@@ -64,143 +65,6 @@ const RegisterSty = styled.section`
     }
   }
 
-  .control {
-    margin-bottom: 0.5rem;
-    min-width: 300px;
-
-    label {
-      display: block;
-
-      font-weight: bold;
-      margin-block: 0.5rem 0.2rem;
-      color: var(--color-title-2);
-    }
-
-    input {
-      height: 52px;
-      min-width: 350px;
-      border-radius: var(--radius);
-
-      border: 1px solid var(--color-text);
-      padding-left: 1rem;
-      color: var(--color-title);
-
-      ::placeholder {
-        font-size: 1rem;
-
-        color: var(--color-text);
-      }
-
-      ::-webkit-datetime-edit-text {
-        padding: 0 0.2em;
-      }
-
-      ::-webkit-inner-spin-button {
-        display: none;
-      }
-      ::-webkit-calendar-picker-indicator {
-        display: none;
-      }
-
-      @media (max-width: 420px) {
-        min-width: 330px;
-      }
-    }
-    input[type="date"] {
-      background-color: white;
-    }
-    input:focus {
-      border: 2px solid var(--focus-color);
-      outline: none;
-    }
-
-    .error {
-      position: absolute;
-      color: red;
-      font-size: 0.875rem;
-    }
-  }
-
-  .control.name {
-    label {
-      color: ${(props) => props.nameIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.nameIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.cpf {
-    label {
-      color: ${(props) => props.cpfIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.cpfIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.cep {
-    label {
-      color: ${(props) => props.cepIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.cepIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.birth {
-    label {
-      color: ${(props) => props.birthIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.birthIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.log {
-    label {
-      color: ${(props) => props.logIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.logIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.comp {
-    label {
-      color: ${(props) => props.compIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.compIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.bairro {
-    label {
-      color: ${(props) => props.bairroIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.bairroIsInvalid && "1px solid red"};
-    }
-  }
-
-  .control.local {
-    label {
-      color: ${(props) => props.localIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.localIsInvalid && "1px solid red"};
-    }
-  }
-  .control.uf {
-    label {
-      color: ${(props) => props.ufIsInvalid && "red"};
-    }
-    input {
-      border: ${(props) => props.ufIsInvalid && "1px solid red"};
-    }
-  }
-
   .alert {
     position: fixed;
     top: 30%;
@@ -246,7 +110,7 @@ function Register() {
     reset: resetCpf,
     inputBlurHandler: cpfBlurHandler,
     inputChangeHandler: cpfChangeHandler,
-  } = useInput((value) => value.trim() !== "" && value.length >= 11);
+  } = useInput((value) => value.trim() !== "" && value.length === 11);
 
   const {
     value: enteredCep,
@@ -336,12 +200,7 @@ function Register() {
     return () => clearInterval(interval);
   });
 
-  let cepOnlyNumbers = enteredCep;
-
-  if (enteredCep.includes("-")) {
-    cepOnlyNumbers = zipcodeOnlyNumbers(formatZipcode(enteredCep));
-  }
-
+  // set state after fetch cep
   useEffect(() => {
     logradouroUpdateHandler(cepData.logradouro);
 
@@ -360,6 +219,12 @@ function Register() {
     ufUpdateHandler,
     bairroUpdateHandler,
   ]);
+
+  let cepOnlyNumbers = enteredCep;
+
+  if (enteredCep.includes("-")) {
+    cepOnlyNumbers = zipcodeOnlyNumbers(formatZipcode(enteredCep));
+  }
 
   useEffect(() => {
     const updateData = (response) => {
@@ -405,29 +270,35 @@ function Register() {
     };
   }, [cepOnlyNumbers]);
 
+  let formError = false;
+
+  if (
+    !enteredNameIsValid ||
+    !enteredBirthIsValid ||
+    !enteredLogradouroIsValid ||
+    !enteredComplementoIsValid ||
+    !enteredBairroIsValid ||
+    !enteredLocalidadeIsValid ||
+    !enteredUfIsValid
+  ) {
+    formError = true;
+  }
+
   function formHandler(e) {
     e.preventDefault();
 
-    if (!CPF.isValid(enteredCpf)) {
-      setErrorMessage("CPF é invalido.");
+    if (formError) {
+      setErrorMessage("Formulário Invalido.");
+      return;
+    }
+
+    if (!CPFValidation(enteredCpf)) {
+      setErrorMessage("CPF invalido!! Insira apenas números.");
       return;
     }
 
     if (!enteredCepIsValid && !/^[0-9]+$/.test(cepOnlyNumbers)) {
       setErrorMessage("CEP deve conter apenas números.");
-      return;
-    }
-
-    if (
-      !enteredNameIsValid ||
-      !enteredBirthIsValid ||
-      !enteredLogradouroIsValid ||
-      !enteredComplementoIsValid ||
-      !enteredBairroIsValid ||
-      !enteredLocalidadeIsValid ||
-      !enteredUfIsValid
-    ) {
-      setErrorMessage("Preencha todos os campos.");
       return;
     }
 
@@ -495,132 +366,106 @@ function Register() {
         </div>
       )}
       <form className="mulish__font" onSubmit={formHandler}>
-        <div className="control name">
-          <label htmlFor="name">Nome</label>
-          <input
-            type="text"
-            placeholder="Nome"
-            id="name"
-            onChange={nameChangeHandler}
-            onBlur={nameBlurHandler}
-            value={enteredName}
-          />
-          {nameInputHasError && <p className="error">Insira seu nome.</p>}
-        </div>
+        <Input
+          id="name"
+          label="Nome"
+          error="Nome não pode ser vazio."
+          inputHasError={nameInputHasError}
+          type="text"
+          onChange={nameChangeHandler}
+          onBlur={nameBlurHandler}
+          value={enteredName}
+        />
 
-        <div className="control cpf">
-          <label htmlFor="cpf">CPF</label>
-          <input
-            type="number"
-            placeholder="Somente números.."
-            required
-            id="cpf"
-            onChange={cpfChangeHandler}
-            onBlur={cpfBlurHandler}
-            value={enteredCpf}
-          />
-          {cpfInputHasError && <p className="error">Insira seu CPF.</p>}
-        </div>
+        <Input
+          id="cpf"
+          label="CPF"
+          error="Insira um CPF válido."
+          inputHasError={cpfInputHasError}
+          type="number"
+          onChange={cpfChangeHandler}
+          onBlur={cpfBlurHandler}
+          value={enteredCpf}
+        />
 
-        <div className="control birth">
-          <label htmlFor="birth">Data de Nascimento</label>
-          <input
-            type="date"
-            required
-            id="birth"
-            onChange={birthChangeHandler}
-            onBlur={birthBlurHandler}
-            value={enteredBirth}
-          />
-          {birthInputHasError && (
-            <p className="error">Insira sua data de nascimento.</p>
-          )}
-        </div>
+        <Input
+          id="birth"
+          label="Data de Nascimento"
+          error="Data de nascimento não pode ser vazio."
+          inputHasError={birthInputHasError}
+          type="date"
+          onChange={birthChangeHandler}
+          onBlur={birthBlurHandler}
+          value={enteredBirth}
+        />
 
-        <div className="control cep">
-          <label htmlFor="cep">CEP</label>
-          <input
-            placeholder="Somente números.."
-            type="text"
-            required
-            id="cep"
-            onChange={cepChangeHandler}
-            onBlur={cepBlurHandler}
-            value={enteredCep}
-          />
-          {cepInputHasError && <p className="error">Insira seu CEP.</p>}
-        </div>
+        <Input
+          id="cep"
+          label="CEP"
+          error="Insira um cep válido."
+          inputHasError={cepInputHasError}
+          type="text"
+          onChange={cepChangeHandler}
+          onBlur={cepBlurHandler}
+          value={enteredCep}
+        />
 
         {enteredCep.length >= 8 && (
           <>
-            <div className="control log">
-              <label htmlFor="logradouro">Endereço</label>
-              <input
-                type="text"
-                required
-                id="logradouro"
-                onChange={logradouroChangeHandler}
-                onBlur={logradouroBlurHandler}
-                value={enteredLogradouro}
-              />
-              {logradouroInputHasError && (
-                <p className="error">Insira seu endereço.</p>
-              )}
-            </div>
-            <div className="control comp">
-              <label htmlFor="complemento">Complemento</label>
-              <input
-                required
-                type="text"
-                id="complemento"
-                onChange={complementoChangeHandler}
-                onBlur={complementoBlurHandler}
-                value={enteredComplemento}
-              />
-              {complementoInputHasError && (
-                <p className="error">Insira um complemento.</p>
-              )}
-            </div>
-            <div className="control bairro">
-              <label htmlFor="bairro">Bairro</label>
-              <input
-                type="text"
-                required
-                id="bairro"
-                onChange={bairroChangeHandler}
-                onBlur={bairroBlurHandler}
-                value={enteredBairro}
-              />
-              {bairroInputHasError && (
-                <p className="error">Insira seu bairro.</p>
-              )}
-            </div>
-            <div className="control local">
-              <label htmlFor="localidade">Cidade</label>
-              <input
-                type="text"
-                required
-                id="localidade"
-                onChange={localidadeChangeHandler}
-                onBlur={localidadeBlurHandler}
-                value={enteredLocalidade}
-              />
-              {localidadeInputHasError && (
-                <p className="error">Insira sua cidade.</p>
-              )}
-            </div>
-            <div className="control uf">
-              <label htmlFor="uf">UF</label>
-              <input
-                type="text"
-                required
-                id="uf"
-                onBlur={ufBlurHandler}
-                onChange={ufChangeHandler}
-                value={enteredUf}
-              />
-              {ufInputHasError && <p className="error">Insira seu estado.</p>}
-            </div>
+            <Input
+              id="logradouro"
+              label="Endereço"
+              error="Endereço não pode ser vazio."
+              inputHasError={logradouroInputHasError}
+              type="text"
+              onChange={logradouroChangeHandler}
+              onBlur={logradouroBlurHandler}
+              value={enteredLogradouro}
+            />
+
+            <Input
+              id="complemento"
+              label="Complemento"
+              error="Complemento não pode ser vazio."
+              inputHasError={complementoInputHasError}
+              type="text"
+              onChange={complementoChangeHandler}
+              onBlur={complementoBlurHandler}
+              value={enteredComplemento}
+            />
+
+            <Input
+              id="bairro"
+              label="Bairro"
+              error="Bairro não pode ser vazio."
+              inputHasError={bairroInputHasError}
+              type="text"
+              onChange={bairroChangeHandler}
+              onBlur={bairroBlurHandler}
+              value={enteredBairro}
+            />
+
+            <Input
+              id="localidade"
+              label="Cidade"
+              error="Cidade não pode ser vazio."
+              inputHasError={localidadeInputHasError}
+              type="text"
+              onChange={localidadeChangeHandler}
+              onBlur={localidadeBlurHandler}
+              value={enteredLocalidade}
+            />
+
+            <Input
+              id="uf"
+              label="Estado"
+              error="Estado não pode ser vazio."
+              inputHasError={ufInputHasError}
+              type="text"
+              onChange={ufChangeHandler}
+              onBlur={ufBlurHandler}
+              value={enteredUf}
+            />
           </>
         )}
 
