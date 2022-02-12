@@ -110,7 +110,7 @@ function Register() {
     reset: resetCpf,
     inputBlurHandler: cpfBlurHandler,
     inputChangeHandler: cpfChangeHandler,
-  } = useInput((value) => value.trim() !== "" && value.length === 11);
+  } = useInput((value) => value.trim() !== "" && value.length === 11, true);
 
   const {
     value: enteredCep,
@@ -288,12 +288,12 @@ function Register() {
     e.preventDefault();
 
     if (formError) {
-      setErrorMessage("Formulário Invalido.");
+      setErrorMessage("Preencha todos os campos do formulário.");
       return;
     }
 
     if (!CPFValidation(enteredCpf)) {
-      setErrorMessage("CPF invalido!! Insira apenas números.");
+      setErrorMessage("Insira um cpf válido. (apenas números)");
       return;
     }
 
@@ -410,7 +410,7 @@ function Register() {
           value={enteredCep}
         />
 
-        {enteredCep.length >= 8 && (
+        {cepOnlyNumbers.length >= 8 && (
           <>
             <Input
               id="logradouro"

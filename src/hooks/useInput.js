@@ -1,10 +1,16 @@
 import { useCallback, useState } from "react";
+import { CPFValidation } from "../utils/cpf";
 
-const useInput = (validateValue) => {
+const useInput = (validateValue, isCPF = null) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const valueIsValid = validateValue(enteredValue);
+  let valueIsValid = validateValue(enteredValue);
+
+  if (isCPF) {
+    valueIsValid = validateValue(enteredValue) && CPFValidation(enteredValue);
+  }
+
   const hasError = !valueIsValid && isTouched;
 
   const inputChangeHandler = (event) => {
