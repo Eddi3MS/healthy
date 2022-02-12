@@ -110,7 +110,7 @@ function Register() {
     reset: resetCpf,
     inputBlurHandler: cpfBlurHandler,
     inputChangeHandler: cpfChangeHandler,
-  } = useInput((value) => value.trim() !== "" && value.length === 11, true);
+  } = useInput((value) => value.trim().length === 11, true);
 
   const {
     value: enteredCep,
