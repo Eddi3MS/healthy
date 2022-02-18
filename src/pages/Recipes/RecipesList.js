@@ -1,22 +1,6 @@
-import styled from "styled-components";
 import data from "../../data";
 import RecipeItem from "./RecipeItem";
-
-const RecipesListSty = styled.div`
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-
-  ul {
-    width: 100%;
-    margin: 0;
-    padding-inline-start: 0;
-
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-`;
+import { RecipesListSty } from "./RecipesList.styled";
 
 const recipes = data[0];
 
