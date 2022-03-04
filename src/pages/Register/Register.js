@@ -142,47 +142,40 @@ function Register() {
   }
 
   useEffect(() => {
-    const updateData = (response) => {
-      if (response.erro === true) {
-        setErrorMessage("CEP é invalido.");
-        return;
-      }
-
-      const { logradouro, complemento, bairro, localidade, uf } = response;
-      setCepData({
-        logradouro,
-        complemento,
-        bairro,
-        localidade,
-        uf,
-      });
-    };
-
-    const options = {
-      method: "GET",
-      mode: "cors",
-      cache: "default",
-    };
-
     const fetchCEP = async () => {
-      if (/^[0-9]+$/.test(cepOnlyNumbers) && cepOnlyNumbers.length >= 8) {
+      if (cepOnlyNumbers.length >= 8) {
         try {
           const viacep = await fetch(
             `https://viacep.com.br/ws/${cepOnlyNumbers}/json`,
-            options
+            {
+              method: "GET",
+              mode: "cors",
+              cache: "default",
+            }
           );
 
           const response = await viacep.json();
-          updateData(response);
+
+          if (response.erro === true) {
+            setErrorMessage("CEP é invalido.");
+            return;
+          }
+
+          const { logradouro, complemento, bairro, localidade, uf } = response;
+          setCepData({
+            logradouro,
+            complemento,
+            bairro,
+            localidade,
+            uf,
+          });
         } catch (error) {
           console.log(error);
         }
       }
     };
 
-    return () => {
-      clearTimeout(fetchCEP);
-    };
+    fetchCEP();
   }, [cepOnlyNumbers]);
 
   let formError = false;

@@ -23,9 +23,12 @@ function Join() {
   function addEmailHandler(e) {
     e.preventDefault();
 
-    const enteredEmail = email;
+    if (email.trim().length === 0 || !email.includes("@")) {
+      return;
+    }
+
     const emailToAdd = {
-      email: enteredEmail,
+      email,
     };
 
     fetch(process.env.REACT_APP_ADDRESS, {
@@ -75,6 +78,7 @@ function Join() {
             type="email"
             name="email"
             id="email"
+            required
             value={email}
             placeholder="Enter your email address"
             onChange={(e) => setEmail(e.target.value)}
